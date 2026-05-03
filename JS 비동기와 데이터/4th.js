@@ -16,15 +16,18 @@ function updateStatus(message, isLoading = false) {
 }
 
 // 카드 생성 함수 (공통 사용)
-function createLionCard(data) {
+function createLionCard(data, isRandom = false) {
     const card = document.createElement('div');
-    card.className = 'my-card';
+    // 랜덤 카드라면 'random-card' 클래스를 추가로 붙임
+    card.className = isRandom ? 'my-card random-card' : 'my-card';
+    
     card.innerHTML = `
+        <span class="badge">${data.part}</span>
         <h3>${data.name}</h3>
-        <p class="badge">${data.part}</p>
         <p>${data.intro}</p>
     `;
-    cardWrapper.prepend(card); // 최신순 배치를 위해 앞에 추가
+    
+    cardWrapper.appendChild(card);
     updateCount();
 }
 
@@ -37,20 +40,19 @@ async function fetchLions(count = 1) {
     try {
         updateStatus("불러오는 중...", true);
         const response = await fetch(`https://jsonplaceholder.typicode.com/users?_limit=${count}`);
-        if (!response.ok) throw new Error("네트워크 오류");
         const users = await response.json();
 
         users.forEach(user => {
+            // 두 번째 인자로 true를 넘겨 'random-card' 클래스가 붙게 함
             createLionCard({
                 name: user.name,
                 part: ['Frontend', 'Backend', 'Design'][Math.floor(Math.random() * 3)],
-                intro: `${user.company.name} 소속 아기사자입니다.` // 반영
-            });
+                intro: `${user.company.name}에서 온 사자입니다.`
+            }, true); 
         });
         updateStatus("준비 완료");
     } catch (error) {
         updateStatus("실패: " + error.message);
-        document.getElementById('btn-retry').style.display = 'inline';
     }
 }
 
@@ -86,7 +88,12 @@ document.getElementById('search-input').addEventListener('input', (e) => {
 document.getElementById('btn-random-1').onclick = () => fetchLions(1);
 document.getElementById('btn-random-5').onclick = () => fetchLions(5);
 document.getElementById('btn-refresh').onclick = () => {
-    fetchLions(5);
+    // 1. 기존에 추가된 '랜덤 카드'들만 싹 지우기
+    const randomCards = document.querySelectorAll('.random-card');
+    randomCards.forEach(card => card.remove());
+    
+    // 2. 새로운 랜덤 데이터 5개 불러오기
+    fetchLions(5); 
 };
 document.getElementById('btn-add-form').onclick = () => {
     document.getElementById('form-container').style.display = 'block';
