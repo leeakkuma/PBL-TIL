@@ -32,7 +32,13 @@ function createLionCard(data, isRandom = false) {
 }
 
 function updateCount() {
-    totalCountEl.innerText = cardWrapper.children.length;
+    const totalCountEl = document.getElementById('total-count');
+    const currentCards = document.querySelectorAll('#card-wrapper .my-card');
+    
+    totalCountEl.innerText = currentCards.length;
+}
+window.onload = () => {
+    updateCount(); 
 }
 
 // 비동기 데이터 로드
