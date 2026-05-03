@@ -18,7 +18,6 @@ function updateStatus(message, isLoading = false) {
 // 카드 생성 함수 (공통 사용)
 function createLionCard(data, isRandom = false) {
     const card = document.createElement('div');
-    // 랜덤 카드라면 'random-card' 클래스를 추가로 붙임
     card.className = isRandom ? 'my-card random-card' : 'my-card';
     
     card.innerHTML = `
@@ -28,7 +27,7 @@ function createLionCard(data, isRandom = false) {
     `;
     
     cardWrapper.appendChild(card);
-    updateCount();
+    updateCount(); // 추가 후 다시 세기
 }
 
 function updateCount() {
@@ -91,15 +90,22 @@ document.getElementById('search-input').addEventListener('input', (e) => {
 });
 
 // 이벤트 연결
+document.getElementById('btn-delete-last').onclick = () => {
+    const cards = document.querySelectorAll('#card-wrapper .my-card');
+    if (cards.length > 0) {
+        cards[cards.length - 1].remove(); // 마지막 요소 삭제
+        updateCount(); // 삭제 후 다시 세기
+    }
+};
 document.getElementById('btn-random-1').onclick = () => fetchLions(1);
 document.getElementById('btn-random-5').onclick = () => fetchLions(5);
 document.getElementById('btn-refresh').onclick = () => {
-    // 1. 기존에 추가된 '랜덤 카드'들만 싹 지우기
     const randomCards = document.querySelectorAll('.random-card');
     randomCards.forEach(card => card.remove());
     
-    // 2. 새로운 랜덤 데이터 5개 불러오기
-    fetchLions(5); 
+    updateCount();
+    
+    fetchLions(5);
 };
 document.getElementById('btn-add-form').onclick = () => {
     document.getElementById('form-container').style.display = 'block';
