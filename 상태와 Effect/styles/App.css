@@ -1,0 +1,398 @@
+/* 1. 기본 스타일 초기화 */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #f5f5f7; /* 배경을 살짝 어두운 톤으로 하여 베이지 컨테이너 부각 */
+    padding: 20px;
+    font-family: 'Google Sans', Arial, sans-serif;
+}
+
+/* 2. 상단 컨트롤 및 전체 컨테이너 */
+.container {
+    position: relative;
+    margin: 20px auto;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch; /* 자식 요소들이 가로로 꽉 차도록 변경 */
+    background-color: beige;
+    padding: 30px;
+    border: 4px white solid;
+    max-width: 1200px; /* 전체 너비 제한 */
+}
+
+/* 제목 및 구분선 스타일 */
+.section-title {
+    font-family: 'Google Sans', Arial, sans-serif;
+    margin: 25px 0 10px 0;
+    color: #333;
+    text-align: center;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background: #e0e0d0;
+    margin: 30px 0;
+}
+
+/* 폰트 스타일 */
+.container h3, .container h4, .container p {
+    font-family: 'Google Sans', Arial, sans-serif;
+}
+
+.container h4 { color: plum; }
+
+/* 3. 컨트롤 패널 및 상단 버튼/필터 영역 */
+.control-panel {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.panel-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* 버튼 디자인 공통 */
+.control-panel button {
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Google Sans', Arial, sans-serif;
+}
+
+.control-panel button:hover:not(:disabled) {
+    background: #f5f5f5;
+    transform: translateY(-1px);
+}
+
+.control-panel button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* 인원수 및 상태 표시 */
+.total-count {
+    font-weight: bold;
+    color: #666;
+    margin-left: 5px;
+}
+
+.async-status {
+    font-weight: bold;
+    font-size: 14px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: #f0f0f0;
+    color: #666;
+}
+.async-status.status-완료 { background: #e8f5e9; color: #2e7d32; }
+.async-status.status-불러오는 { background: #fff3e0; color: #ef6c00; }
+.async-status.status-실패 { background: #ffebee; color: #c62828; }
+
+.retry-btn {
+    background: #ffebee !important;
+    color: #c62828 !important;
+    border-color: #ffcdd2 !important;
+}
+
+/* 실시간 검색 및 필터 셀렉트 박스 */
+.view-options {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 5px;
+    flex-wrap: wrap;
+}
+
+.view-options label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #555;
+}
+
+.view-options select, .view-options input {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    outline: none;
+    font-family: 'Google Sans', Arial, sans-serif;
+}
+
+.view-options input {
+    width: 200px;
+}
+
+/* 4. 요약 카드 그리드 (중단 영역) */
+.card-wrapper {
+    display: grid;
+    gap: 20px;
+    padding: 20px 0;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    grid-template-columns: 1fr; /* 모바일: 1열 */
+}
+
+/* 반응형 설정 */
+@media (min-width: 768px) {
+    .card-wrapper { grid-template-columns: repeat(2, 1fr); } /* 태블릿: 2열 */
+}
+
+@media (min-width: 1024px) {
+    .card-wrapper { grid-template-columns: repeat(3, 1fr); } /* 데스크톱: 3열 */
+}
+
+/* 5. 개별 카드 디자인 */
+.my-card {
+    background-color: white; /* 베이지 컨테이너 내부이므로 카드는 하얀색으로 부각 */
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    position: relative;
+    padding: 25px; /* 내부 여백 */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.my-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+/* 내 카드 강조 스타일 */
+.my-card.special-card {
+    border: 2px solid #3b82f6; /* 파란색 테두리 */
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2); /* 은은한 파란 그림자 */
+}
+
+/* 사진 및 플레이스홀더 */
+.card-avatar, .card-avatar-placeholder {
+    width: 100%;           
+    aspect-ratio: 1 / 1;   
+    border-radius: 12px;
+    margin-bottom: 15px;
+    object-fit: cover;
+}
+
+.card-avatar-placeholder {
+    background-color: #e0e0e0; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #888;
+}
+
+.card-avatar-placeholder::after {
+    content: '🦁'; 
+    font-size: 2rem;
+}
+
+/* 파트 표시 배지 */
+.badge {
+    position: absolute; 
+    top: 15px;            
+    right: 15px;          
+    background-color: #f5f5f7; 
+    color: #333;
+    padding: 4px 12px;
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 20px;
+    border: 1px solid #eee;
+}
+
+/* 6. 상세 정보 영역 (하단 영역) */
+.detail-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+.detail-card {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    text-align: left;
+    border-left: 6px solid plum; /* 상세 카드는 포인트 컬러 사용 */
+}
+
+.detail-card h2 {
+    margin-bottom: 5px;
+    color: #111;
+}
+
+.association {
+    font-size: 12px;
+    color: #999;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.detail-card h3 {
+    font-size: 14px;
+    color: plum;
+    margin-top: 20px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #f5f5f5;
+    padding-bottom: 4px;
+}
+
+.detail-card ul {
+    list-style-type: none;
+    padding-left: 5px;
+}
+
+.detail-card li {
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: #444;
+}
+
+.detail-card a {
+    color: #3b82f6;
+    text-decoration: none;
+}
+
+/* 조건이 없을 때 비어있는 상태 디자인 */
+.empty-state {
+    text-align: center;
+    padding: 50px;
+    background: white;
+    border-radius: 15px;
+    color: #888;
+    width: 100%;
+}
+
+/* 7. 수동 추가 폼 모달 레이아웃 */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5); /* 오버레이를 조금 더 명확하게 보정 */
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 90%;
+    max-width: 450px;
+    max-height: 85vh; /* 화면을 벗어나지 않도록 스크롤 지정 */
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.modal-content h2 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* 모달 내부 폼 그룹 */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    text-align: left;
+}
+
+.form-group label {
+    font-size: 13px;
+    font-weight: bold;
+    color: #555;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+}
+
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: plum;
+}
+
+.form-group textarea {
+    resize: none;
+    height: 70px;
+}
+
+/* 모달 하단 버튼 배치 영역 */
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.modal-actions button {
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.btn-random-fill {
+    background-color: #e3f2fd !important;
+    color: #0d47a1 !important;
+    border-color: #bbdefb !important;
+    margin-right: auto; /* 왼쪽 끝으로 밀기 */
+}
+
+.btn-cancel {
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+.btn-submit {
+    background-color: plum !important;
+    color: white !important;
+    border: none !important;
+}
+
+.btn-submit:disabled {
+    background-color: #e0e0e0 !important;
+    color: #a6a6a6 !important;
+    cursor: not-allowed !important;
+}
