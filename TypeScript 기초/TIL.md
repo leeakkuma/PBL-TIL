@@ -7,13 +7,13 @@
 ### 2. 핵심 정리 (내 언어로)
   TypeScript는 "이 변수에는 이런 모양의 값이 들어와야 해"라고 미리 약속해두는 것이다. 그러면 코드를 작성할 때 빨간 줄로 실수를 바로바로 알려주니까 버그가 줄어든다.
 ### 3. 결과 이미지(스크린샷)
-<img src="1">
-<img src="2">
-<img src="3">
-<img src="4">
-<img src="5">
-<img src="6">
-<img src="7">
+<img src="1.png">
+<img src="2.png">
+<img src="3.png">
+<img src="4.png">
+<img src="5.png">
+<img src="6.png">
+<img src="7.png">
 
 
 ### 4. 느낀 점
